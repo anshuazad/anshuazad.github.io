@@ -1,0 +1,94 @@
+---
+import type { Role } from '../data/experience';
+interface Props {
+  roles: Role[];
+}
+const { roles } = Astro.props;
+---
+
+<ol class="roles">
+  {
+    roles.map((role) => (
+      <li class="role">
+        <div class="role-head">
+          <h3>{role.title}</h3>
+          <p class="meta">
+            {role.company} <span aria-hidden="true">·</span> {role.period}
+          </p>
+        </div>
+
+        <ol class="engagements">
+          {role.engagements.map((e) => (
+            <li class="engagement">
+              <h4>
+                {e.name} <span class="client">{e.client}</span>
+              </h4>
+              <p class="period">{e.period}</p>
+              <ul class="points">
+                {e.points.map((p) => (
+                  <li>{p}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .roles,
+  .engagements {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .role + .role {
+    margin-top: var(--space-4);
+  }
+  .role-head h3 {
+    font-size: var(--step-1);
+  }
+  .meta {
+    margin-top: 0.15rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .engagements {
+    margin-top: var(--space-3);
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--border);
+  }
+  .engagement + .engagement {
+    margin-top: var(--space-3);
+  }
+  .engagement h4 {
+    margin: 0;
+    font-size: 0.975rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .client {
+    font-weight: 400;
+    color: var(--accent-text);
+  }
+  .client::before {
+    content: '· ';
+    color: var(--text-faint);
+  }
+  .period {
+    margin-top: 0.1rem;
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .points {
+    margin: var(--space-2) 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+  }
+  .points li + li {
+    margin-top: var(--space-1);
+  }
+</style>

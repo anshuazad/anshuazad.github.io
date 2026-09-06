@@ -1,0 +1,26 @@
+---
+import type { SkillGroup } from '../data/skills';
+interface Props {
+  group: SkillGroup;
+}
+const { group } = Astro.props;
+---
+
+<div class="group">
+  <h3>{group.title}</h3>
+  <ul class="chip-row">
+    {group.items.map((item) => <li class="chip">{item}</li>)}
+  </ul>
+</div>
+
+<style>
+  .group + :global(.group) {
+    margin-top: var(--space-3);
+  }
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    color: var(--text-muted);
+  }
+</style>

@@ -1,0 +1,151 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Timeline from '../components/Timeline.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SkillGroup from '../components/SkillGroup.astro';
+import { profile, education } from '../data/profile';
+import { experience } from '../data/experience';
+import { skills } from '../data/skills';
+import { achievements } from '../data/achievements';
+
+const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Base>
+  <div class="page">
+    <Hero />
+
+    <main id="main">
+      <Section title="Selected projects" id="projects">
+        {
+          projects.length > 0 ? (
+            projects.map((project) => <ProjectCard project={project} />)
+          ) : (
+            <div class="empty">
+              <p>
+                Writeups are in progress. In the meantime, the code is on{' '}
+                <a href={profile.links.github} rel="noopener">
+                  GitHub
+                </a>{' '}
+                — including two quantitative research frameworks and a mobile
+                product build.
+              </p>
+            </div>
+          )
+        }
+      </Section>
+
+      <Section title="Experience" id="experience">
+        <Timeline roles={experience} />
+      </Section>
+
+      <Section title="Skills" id="skills">
+        {skills.map((group) => <SkillGroup group={group} />)}
+      </Section>
+
+      <Section title="Education" id="education">
+        <h3 class="inst">{education.institution}</h3>
+        <p class="muted degree">
+          {education.degree} <span aria-hidden="true">·</span>{' '}
+          {education.extra}
+        </p>
+        <p class="edu-meta">
+          {education.period} <span aria-hidden="true">·</span>{' '}
+          {education.detail}
+        </p>
+      </Section>
+
+      <Section title="Achievements" id="achievements">
+        <ul class="awards">
+          {
+            achievements.map((a) => (
+              <li>
+                <span class="award-title">{a.title}</span>
+                <span class="award-result">{a.result}</span>
+                {a.note && <span class="award-note">{a.note}</span>}
+              </li>
+            ))
+          }
+        </ul>
+      </Section>
+
+      <Section title="Contact" id="contact">
+        <p class="muted">
+          Open to conversations about data science and applied GenAI roles.
+        </p>
+        <p class="contact-links">
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <span aria-hidden="true">·</span>
+          <a href={profile.links.linkedin} rel="me noopener">LinkedIn</a>
+          <span aria-hidden="true">·</span>
+          <a href={profile.links.github} rel="me noopener">GitHub</a>
+        </p>
+      </Section>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .empty {
+    padding: var(--space-3);
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+  }
+  .inst {
+    font-size: var(--step-1);
+  }
+  .degree {
+    margin-top: 0.2rem;
+  }
+  .edu-meta {
+    margin-top: 0.15rem;
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .awards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .awards li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--space-2);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .awards li:first-child {
+    padding-top: 0;
+  }
+  .awards li:last-child {
+    border-bottom: 0;
+  }
+  .award-title {
+    font-weight: 550;
+  }
+  .award-result {
+    color: var(--accent-text);
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
+  .award-note {
+    flex-basis: 100%;
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .contact-links {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--text-faint);
+  }
+</style>

@@ -1,0 +1,154 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { profile } from '../../data/profile';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const projects = await getCollection('projects', (p) => !p.data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+};
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, blurb, period, stack, metrics, repo, demo } = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={`${title} — ${profile.name}`} description={blurb}>
+  <div class="page">
+    <p class="back"><a href="/">← {profile.name}</a></p>
+
+    <main id="main">
+      <article>
+        <header class="head">
+          <h1>{title}</h1>
+          <p class="blurb">{blurb}</p>
+          {period && <p class="period">{period}</p>}
+
+          {
+            metrics && metrics.length > 0 && (
+              <dl class="metrics">
+                {metrics.map((m) => (
+                  <div class="metric">
+                    <dt>{m.label}</dt>
+                    <dd>{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )
+          }
+
+          <ul class="chip-row">
+            {stack.map((s) => <li class="chip">{s}</li>)}
+          </ul>
+
+          {
+            (repo || demo) && (
+              <p class="ext">
+                {repo && (
+                  <a href={repo} rel="noopener">
+                    Source code
+                  </a>
+                )}
+                {repo && demo && <span aria-hidden="true">·</span>}
+                {demo && (
+                  <a href={demo} rel="noopener">
+                    Live demo
+                  </a>
+                )}
+              </p>
+            )
+          }
+        </header>
+
+        <div class="prose">
+          <Content />
+        </div>
+      </article>
+    </main>
+
+    <p class="back foot"><a href="/#projects">← All projects</a></p>
+  </div>
+</Base>
+
+<style>
+  .back {
+    font-size: 0.875rem;
+    color: var(--text-faint);
+  }
+  .back a {
+    text-decoration: none;
+  }
+  .back a:hover {
+    text-decoration: underline;
+  }
+  .foot {
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+  .head {
+    margin-top: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+  h1 {
+    font-size: var(--step-3);
+  }
+  .blurb {
+    margin-top: var(--space-2);
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    max-width: var(--measure);
+  }
+  .period {
+    margin-top: var(--space-2);
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: var(--space-2) var(--space-3);
+    background: var(--accent-soft);
+    border-radius: var(--radius);
+  }
+  .metric dt {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .metric dd {
+    margin: 0.1rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-text);
+  }
+  .chip-row {
+    margin-top: var(--space-3);
+  }
+  .ext {
+    margin-top: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--text-faint);
+  }
+  .ext a {
+    color: var(--accent-text);
+  }
+  .prose {
+    margin-top: var(--space-4);
+  }
+</style>

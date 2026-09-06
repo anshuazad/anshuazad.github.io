@@ -1,0 +1,52 @@
+---
+import { profile } from '../data/profile';
+---
+
+<header class="hero">
+  <h1>{profile.name}</h1>
+  <p class="headline">{profile.headline}</p>
+  <p class="pitch">{profile.pitch}</p>
+
+  <ul class="links">
+    <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+    <li>
+      <a href={profile.links.linkedin} rel="me noopener">LinkedIn</a>
+    </li>
+    <li><a href={profile.links.github} rel="me noopener">GitHub</a></li>
+    {
+      profile.resume && (
+        <li>
+          <a href={profile.resume}>Résumé (PDF)</a>
+        </li>
+      )
+    }
+  </ul>
+</header>
+
+<style>
+  .hero h1 {
+    font-size: var(--step-3);
+  }
+  .headline {
+    margin-top: var(--space-2);
+    font-size: var(--step-1);
+    color: var(--text);
+    max-width: 36ch;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+  .pitch {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: var(--measure);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+  }
+</style>

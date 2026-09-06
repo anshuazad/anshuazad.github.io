@@ -1,0 +1,120 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const { title, blurb, period, stack, metrics, repo } = project.data;
+---
+
+<article class="card">
+  <div class="head">
+    <h3>
+      <a href={`/projects/${project.id}/`}>{title}</a>
+    </h3>
+    {period && <p class="period">{period}</p>}
+  </div>
+
+  <p class="blurb">{blurb}</p>
+
+  {
+    metrics && metrics.length > 0 && (
+      <dl class="metrics">
+        {metrics.map((m) => (
+          <div class="metric">
+            <dt>{m.label}</dt>
+            <dd>{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  <ul class="chip-row">
+    {stack.map((s) => <li class="chip">{s}</li>)}
+  </ul>
+
+  <p class="actions">
+    <a href={`/projects/${project.id}/`}>Read the writeup</a>
+    {
+      repo && (
+        <>
+          <span aria-hidden="true">·</span>
+          <a href={repo} rel="noopener">
+            Source
+          </a>
+        </>
+      )
+    }
+  </p>
+</article>
+
+<style>
+  .card {
+    padding: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .card + :global(.card) {
+    margin-top: var(--space-3);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  h3 {
+    font-size: var(--step-1);
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  h3 a:hover {
+    text-decoration: underline;
+  }
+  .period {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .blurb {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+  }
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: var(--space-2) var(--space-3);
+    background: var(--accent-soft);
+    border-radius: var(--radius);
+  }
+  .metric dt {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .metric dd {
+    margin: 0.1rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-text);
+  }
+  .chip-row {
+    margin-top: var(--space-3);
+  }
+  .actions {
+    margin-top: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--text-faint);
+  }
+  .actions a {
+    color: var(--accent-text);
+  }
+</style>
