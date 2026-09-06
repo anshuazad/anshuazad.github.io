@@ -1,52 +1,114 @@
 ---
 import { profile } from '../data/profile';
+
+const links = [
+  { href: `mailto:${profile.email}`, label: profile.email, rel: undefined },
+  { href: profile.links.linkedin, label: 'LinkedIn', rel: 'me noopener' },
+  { href: profile.links.github, label: 'GitHub', rel: 'me noopener' },
+  ...(profile.resume
+    ? [{ href: profile.resume, label: 'Résumé (PDF)', rel: undefined }]
+    : []),
+];
 ---
 
-<header class="hero">
+<header class="hero" id="top">
+  <p class="kicker">{profile.role} <span aria-hidden="true">·</span> {profile.location}</p>
+
   <h1>{profile.name}</h1>
+
+  <div class="rule" aria-hidden="true"></div>
+
   <p class="headline">{profile.headline}</p>
+
   <p class="pitch">{profile.pitch}</p>
 
   <ul class="links">
-    <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
-    <li>
-      <a href={profile.links.linkedin} rel="me noopener">LinkedIn</a>
-    </li>
-    <li><a href={profile.links.github} rel="me noopener">GitHub</a></li>
     {
-      profile.resume && (
+      links.map((link) => (
         <li>
-          <a href={profile.resume}>Résumé (PDF)</a>
+          <a href={link.href} rel={link.rel}>
+            {link.label}
+          </a>
         </li>
-      )
+      ))
     }
   </ul>
 </header>
 
 <style>
-  .hero h1 {
-    font-size: var(--step-3);
+  .hero {
+    padding-top: var(--space-6);
   }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-3);
+    font-size: var(--step-4);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    max-width: 10ch;
+  }
+
+  .rule {
+    width: 3.5rem;
+    height: 2px;
+    margin-top: var(--space-4);
+    background: var(--accent);
+  }
+
   .headline {
-    margin-top: var(--space-2);
-    font-size: var(--step-1);
-    color: var(--text);
-    max-width: 36ch;
-    font-weight: 500;
+    margin-top: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1.24;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    max-width: 22ch;
     text-wrap: balance;
   }
+
   .pitch {
     margin-top: var(--space-3);
     color: var(--text-muted);
     max-width: var(--measure);
   }
+
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-3);
-    margin: var(--space-3) 0 0;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-4) 0 0;
     padding: 0;
     list-style: none;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+  }
+
+  .links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 0.1rem;
+    transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+  }
+
+  .links a:hover {
+    color: var(--accent-text);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (min-width: 62rem) {
+    .hero {
+      padding-top: var(--space-7);
+    }
+    .headline {
+      max-width: 24ch;
+    }
   }
 </style>

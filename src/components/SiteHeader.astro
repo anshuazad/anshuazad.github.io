@@ -1,0 +1,121 @@
+---
+import { profile } from '../data/profile';
+
+const nav = [
+  { id: 'projects', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const initials = profile.name
+  .split(' ')
+  .map((word) => word[0])
+  .join('');
+---
+
+<div class="site-header">
+  <div class="bar">
+    <a class="mark" href="#top" aria-label={`${profile.name} — back to top`}>
+      {initials}
+    </a>
+    <nav aria-label="Page sections">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={`#${item.id}`} data-nav={item.id}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* Fallback first: if color-mix is unsupported the bar stays opaque
+       rather than letting content scroll through it. */
+    background: var(--bg);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.6) blur(10px);
+    -webkit-backdrop-filter: saturate(1.6) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .site-header.is-stuck {
+    border-bottom-color: var(--border);
+  }
+
+  .bar {
+    max-width: var(--page);
+    margin-inline: auto;
+    height: var(--header-h);
+    padding-inline: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .mark {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+    text-decoration: none;
+    padding-block: 0.25rem;
+    border-bottom: 1px solid transparent;
+  }
+
+  nav a:hover {
+    color: var(--text);
+  }
+
+  nav a[aria-current='true'] {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (max-width: 40rem) {
+    .bar {
+      padding-inline: var(--space-3);
+    }
+    nav ul {
+      gap: var(--space-2);
+    }
+    nav a {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 26rem) {
+    .mark {
+      display: none;
+    }
+    .bar {
+      justify-content: center;
+    }
+  }
+</style>

@@ -6,18 +6,71 @@ interface Props {
 const { title, id } = Astro.props;
 ---
 
-<section aria-labelledby={`${id}-heading`} id={id}>
-  <h2 class="eyebrow" id={`${id}-heading`}>{title}</h2>
-  <div class="body"><slot /></div>
+<section aria-labelledby={`${id}-heading`} id={id} data-reveal>
+  <div class="inner">
+    <div class="rail">
+      <h2 id={`${id}-heading`}>
+        <span class="num" aria-hidden="true"></span>
+        <span class="label">{title}</span>
+      </h2>
+    </div>
+    <div class="body"><slot /></div>
+  </div>
 </section>
 
 <style>
   section {
     margin-top: var(--space-5);
-    padding-top: var(--space-3);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-h) + var(--space-3));
   }
+
+  .inner {
+    display: grid;
+    gap: var(--space-3);
+  }
+
   h2 {
-    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: var(--accent-text);
+  }
+
+  .num::before {
+    counter-increment: section;
+    content: counter(section, decimal-leading-zero);
+  }
+
+  @media (min-width: 62rem) {
+    .inner {
+      grid-template-columns: var(--rail) minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+
+    .rail {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-4));
+      align-self: start;
+    }
+
+    h2 {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+      line-height: 1.4;
+    }
   }
 </style>

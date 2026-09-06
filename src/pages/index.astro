@@ -99,14 +99,19 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
     color: var(--text-muted);
   }
   .inst {
-    font-size: var(--step-1);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.015em;
   }
   .degree {
     margin-top: 0.2rem;
   }
   .edu-meta {
-    margin-top: 0.15rem;
-    font-size: 0.8125rem;
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
     color: var(--text-faint);
   }
   .awards {
@@ -133,8 +138,9 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
   }
   .award-result {
     color: var(--accent-text);
-    font-size: 0.9rem;
-    font-weight: 550;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
   }
   .award-note {
     flex-basis: 100%;

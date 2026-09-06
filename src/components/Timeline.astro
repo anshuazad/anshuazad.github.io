@@ -48,12 +48,18 @@ const { roles } = Astro.props;
     margin-top: var(--space-4);
   }
   .role-head h3 {
-    font-size: var(--step-1);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.015em;
   }
   .meta {
-    margin-top: 0.15rem;
-    font-size: 0.875rem;
-    color: var(--text-muted);
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
   }
   .engagements {
     margin-top: var(--space-3);
@@ -79,7 +85,9 @@ const { roles } = Astro.props;
   }
   .period {
     margin-top: 0.1rem;
-    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
     color: var(--text-faint);
   }
   .points {
