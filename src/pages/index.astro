@@ -21,6 +21,25 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
     <Hero />
 
     <main id="main">
+      <Section title="Introduction" id="about">
+        <p class="lede">{profile.headline}</p>
+        <p class="muted intro-pitch">{profile.pitch}</p>
+        <ul class="intro-links">
+          <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+          <li>
+            <a href={profile.links.linkedin} rel="me noopener">LinkedIn</a>
+          </li>
+          <li><a href={profile.links.github} rel="me noopener">GitHub</a></li>
+          {
+            profile.resume && (
+              <li>
+                <a href={profile.resume}>Résumé (PDF)</a>
+              </li>
+            )
+          }
+        </ul>
+      </Section>
+
       <Section title="Selected projects" id="projects">
         {
           projects.length > 0 ? (
@@ -91,6 +110,39 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
 </Base>
 
 <style>
+  .lede {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .intro-pitch {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
+  }
+  .intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+  }
+  .intro-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 0.1rem;
+    transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+  }
+  .intro-links a:hover {
+    color: var(--accent-text);
+    border-bottom-color: var(--accent);
+  }
   .empty {
     padding: var(--space-3);
     background: var(--surface);
@@ -101,7 +153,7 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
   .inst {
     font-family: var(--font-display);
     font-size: var(--step-2);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.015em;
   }
   .degree {

@@ -13,6 +13,10 @@ const projects = defineCollection({
     metrics: z
       .array(z.object({ label: z.string(), value: z.string() }))
       .optional(),
+    /** Card image. Path under public/, e.g. '/thumbs/my-project.svg'. */
+    thumbnail: z.string().optional(),
+    /** Short domain label shown above the title, e.g. 'Healthcare'. */
+    domain: z.string().optional(),
     repo: z.string().url().optional(),
     demo: z.string().url().optional(),
     /** Private working notes. Frontmatter is data — this never reaches the page. */

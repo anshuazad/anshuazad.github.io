@@ -1,43 +1,67 @@
 ---
 import { profile } from '../data/profile';
 
-const links = [
-  { href: `mailto:${profile.email}`, label: profile.email, rel: undefined },
-  { href: profile.links.linkedin, label: 'LinkedIn', rel: 'me noopener' },
-  { href: profile.links.github, label: 'GitHub', rel: 'me noopener' },
-  ...(profile.resume
-    ? [{ href: profile.resume, label: 'Résumé (PDF)', rel: undefined }]
-    : []),
-];
+const firstName = profile.name.split(' ')[0];
 ---
 
 <header class="hero" id="top">
-  <p class="kicker">{profile.role} <span aria-hidden="true">·</span> {profile.location}</p>
+  <div class="copy">
+    <p class="kicker">
+      {profile.role} <span aria-hidden="true">·</span> {profile.location}
+    </p>
 
-  <h1>{profile.name}</h1>
+    <h1>
+      <span class="greet">Hi, I'm</span>{' '}
+      <span class="who">{firstName}</span>
+    </h1>
 
-  <div class="rule" aria-hidden="true"></div>
+    {profile.tagline && <p class="tagline">{profile.tagline}</p>}
 
-  <p class="headline">{profile.headline}</p>
-
-  <p class="pitch">{profile.pitch}</p>
-
-  <ul class="links">
     {
-      links.map((link) => (
-        <li>
-          <a href={link.href} rel={link.rel}>
-            {link.label}
-          </a>
-        </li>
-      ))
+      profile.employer && (
+        <div class="employer">
+          <span class="employer-label">{profile.employer.label}</span>
+          <img
+            class="employer-logo"
+            src={profile.employer.logo}
+            alt={profile.employer.name}
+            width="96"
+            height="96"
+          />
+        </div>
+      )
     }
-  </ul>
+  </div>
+
+  {
+    profile.heroImage && (
+      <div class="hero-visual">
+        <img
+          src={profile.heroImage}
+          alt={profile.heroImageAlt}
+          width="640"
+          height="588"
+        />
+      </div>
+    )
+  }
+
+  <a class="scroll-cue" href="#about" aria-label="Scroll to introduction">
+    <span class="dot" aria-hidden="true"></span>
+  </a>
 </header>
 
 <style>
   .hero {
-    padding-top: var(--space-6);
+    position: relative;
+    min-height: calc(100svh - var(--header-h));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding-block: var(--space-6) var(--space-7);
+    text-align: center;
   }
 
   .kicker {
@@ -51,64 +75,99 @@ const links = [
   .hero h1 {
     margin-top: var(--space-3);
     font-size: var(--step-4);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    max-width: 10ch;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
   }
 
-  .rule {
-    width: 3.5rem;
-    height: 2px;
-    margin-top: var(--space-4);
-    background: var(--accent);
+  .greet {
+    color: var(--text);
   }
 
-  .headline {
-    margin-top: var(--space-4);
-    font-family: var(--font-display);
-    font-size: var(--step-3);
-    line-height: 1.24;
-    letter-spacing: -0.015em;
-    font-weight: 400;
-    max-width: 22ch;
-    text-wrap: balance;
-  }
-
-  .pitch {
-    margin-top: var(--space-3);
-    color: var(--text-muted);
-    max-width: var(--measure);
-  }
-
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    margin: var(--space-4) 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: 0.875rem;
-  }
-
-  .links a {
-    text-decoration: none;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border-strong);
-    padding-bottom: 0.1rem;
-    transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
-  }
-
-  .links a:hover {
+  /* The name is the one thing that should carry colour. */
+  .who {
     color: var(--accent-text);
-    border-bottom-color: var(--accent);
+  }
+
+  .tagline {
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .employer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .employer-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .employer-logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    object-fit: contain;
+    padding: 0.3rem;
+  }
+
+  /* Sized against viewport height so the whole hero always fits one screen,
+     including on short laptop viewports. */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .hero-visual img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: min(40svh, 21rem);
+    max-width: 100%;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: var(--space-3);
+    translate: -50% 0;
+    width: 1.5rem;
+    height: 2.4rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    display: grid;
+    justify-items: center;
+    padding-top: 0.45rem;
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: nudge 1.8s var(--ease) infinite;
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(0.7rem); opacity: 0.35; }
   }
 
   @media (min-width: 62rem) {
-    .hero {
-      padding-top: var(--space-7);
-    }
-    .headline {
-      max-width: 24ch;
+    .hero-visual img {
+      max-height: min(44svh, 25rem);
     }
   }
 </style>

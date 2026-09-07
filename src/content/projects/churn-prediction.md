@@ -2,6 +2,8 @@
 title: Customer Churn Prediction
 blurb: A churn model built baseline-first, where the reported lift is measured against the simplest rule that already worked.
 stack: [Python, pandas, scikit-learn, XGBoost]
+thumbnail: /thumbs/churn-prediction.svg
+domain: Placeholder domain
 featured: true
 draft: false
 order: 1

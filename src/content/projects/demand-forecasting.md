@@ -2,6 +2,8 @@
 title: Retail Demand Forecasting
 blurb: A SKU-level forecasting pipeline evaluated with rolling-origin backtests rather than a single held-out split.
 stack: [Python, pandas, statsmodels, LightGBM]
+thumbnail: /thumbs/demand-forecasting.svg
+domain: Placeholder domain
 featured: false
 draft: false
 order: 2

@@ -4,12 +4,23 @@ interface Props {
   project: CollectionEntry<'projects'>;
 }
 const { project } = Astro.props;
-const { title, blurb, period, stack, metrics, repo, featured } = project.data;
+const { title, blurb, period, stack, metrics, repo, featured, thumbnail, domain } =
+  project.data;
 const href = `/projects/${project.id}/`;
 ---
 
 <article class={featured ? 'card featured' : 'card'}>
+  {
+    thumbnail && (
+      <a class="thumb" href={href} tabindex="-1" aria-hidden="true">
+        <img src={thumbnail} alt="" width="800" height="450" loading="lazy" />
+      </a>
+    )
+  }
+
+  <div class="body">
   {featured && <p class="flag">Start here</p>}
+  {domain && <p class="domain">{domain}</p>}
 
   <div class="head">
     <h3><a href={href}>{title}</a></h3>
@@ -47,12 +58,13 @@ const href = `/projects/${project.id}/`;
       )
     }
   </p>
+  </div>
 </article>
 
 <style>
   .card {
     position: relative;
-    padding: var(--space-4);
+    overflow: hidden;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -97,7 +109,7 @@ const href = `/projects/${project.id}/`;
   h3 {
     font-family: var(--font-display);
     font-size: var(--step-2);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.015em;
     line-height: 1.18;
   }
@@ -186,8 +198,39 @@ const href = `/projects/${project.id}/`;
     text-underline-offset: 0.25em;
   }
 
+  .body {
+    padding: var(--space-4);
+  }
+
+  .thumb {
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: scale 0.35s var(--ease);
+  }
+
+  .card:hover .thumb img {
+    scale: 1.03;
+  }
+
+  .domain {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: var(--space-2);
+  }
+
   @media (max-width: 40rem) {
-    .card {
+    .body {
       padding: var(--space-3);
     }
   }

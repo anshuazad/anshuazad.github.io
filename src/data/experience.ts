@@ -1,6 +1,7 @@
 export interface Engagement {
   name: string;
-  client: string;
+  /** Optional. Left unset for client work that should not be named. */
+  client?: string;
   period: string;
   points: string[];
 }
@@ -9,6 +10,8 @@ export interface Role {
   title: string;
   company: string;
   period: string;
+  /** Optional badge on the timeline. Path under public/, or omit for initials. */
+  logo?: string;
   engagements: Engagement[];
 }
 
@@ -17,10 +20,10 @@ export const experience: Role[] = [
     title: 'Advanced Data Science Associate Consultant · Data Scientist',
     company: 'ZS Associates',
     period: 'Jan 2026 – Present',
+    logo: '/logos/zs.svg',
     engagements: [
       {
         name: 'GenAI Strategy Content Assistant',
-        client: 'AstraZeneca',
         period: 'Jul 2026 – Present',
         points: [
           'Refactoring an MVP-stage GenAI strategy content platform, improving scalability, maintainability, and user experience.',
@@ -28,7 +31,6 @@ export const experience: Role[] = [
       },
       {
         name: 'Transfer Learning & Domain Adaptation',
-        client: 'AstraZeneca',
         period: 'Mar 2026 – Jun 2026',
         points: [
           'Led an end-to-end transfer learning and domain adaptation initiative, owning project scoping, stakeholder communication, and client delivery.',
@@ -39,7 +41,6 @@ export const experience: Role[] = [
       },
       {
         name: 'GenAI Insight Summarizer',
-        client: 'BeOne',
         period: 'Jan 2026 – Apr 2026',
         points: [
           'Built a GenAI-based insight summarization framework that identifies relevant KPIs across multiple data sources and leverages LLMs to generate analyst-style narrative summaries, reducing manual analysis for field teams.',
@@ -51,10 +52,10 @@ export const experience: Role[] = [
     title: 'Decision Analytics Associate',
     company: 'ZS Associates',
     period: 'Jul 2023 – Dec 2025',
+    logo: '/logos/zs.svg',
     engagements: [
       {
         name: 'GenAI Rep Chatbot',
-        client: 'Sobi',
         period: 'Jan 2025 – Dec 2025',
         points: [
           'Designed and implemented an automated GenAI evaluation framework measuring tool-call accuracy, SQL execution correctness, guardrail compliance, response consistency, and latency for release validation.',
@@ -65,7 +66,6 @@ export const experience: Role[] = [
       },
       {
         name: 'Omnichannel Commercial & Medical Analytics',
-        client: 'BMS',
         period: 'Jul 2023 – Dec 2024',
         points: [
           'Analyzed commercial analytics and decisioning problems across Canada, Japan, and Europe, evaluating the impact of Next Best Action (NBA) recommendations.',

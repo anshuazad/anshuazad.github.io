@@ -14,12 +14,12 @@
   --accent-soft: #e6f0ec;
   --accent-text: #0b4638;
 
-  /* Display face is the system serif: Iowan Old Style / Charter on Apple,
-     Georgia everywhere else. Editorial character, no webfont request. */
-  --font-display: ui-serif, "Iowan Old Style", Charter, "Bitstream Charter",
-    "Sitka Text", Cambria, Georgia, "Times New Roman", Times, serif;
-  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  /* Poppins for both display and body, self-hosted. Geometric sans, so it
+     needs more weight contrast than a serif to establish hierarchy. */
+  --font-display: "Poppins", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
 
@@ -96,8 +96,8 @@ h4 {
 
 h1 {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 p {
@@ -226,7 +226,7 @@ pre code {
 
 .prose h2 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--step-2);
   letter-spacing: -0.015em;
   margin-top: var(--space-4);

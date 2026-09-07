@@ -2,6 +2,8 @@
 title: Retrieval Evaluation Harness
 blurb: An offline evaluation harness for a retrieval-augmented system, built so that a release can be blocked on evidence.
 stack: [Python, pytest, LLM APIs, DuckDB]
+thumbnail: /thumbs/retrieval-eval.svg
+domain: Placeholder domain
 featured: false
 draft: false
 order: 3

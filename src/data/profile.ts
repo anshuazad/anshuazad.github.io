@@ -9,12 +9,28 @@ export const profile = {
     'moved a biomarker signal from labeled clinical records into claims data where the test ' +
     'itself was never run. I care most about the unglamorous half of this work: baselines, ' +
     'validation harnesses, and knowing when a result is real.',
+  /** Short line under the greeting. Replace with your own. */
+  tagline: 'I make models prove themselves.',
+  /** Shown under the tagline in the hero. Set to null to hide. */
+  employer: {
+    label: 'Currently at',
+    name: 'ZS Associates',
+    logo: '/logos/zs.svg',
+  } as { label: string; name: string; logo: string } | null,
   location: 'India',
   email: 'anshuazad7@gmail.com',
   links: {
     github: 'https://github.com/anshuazad',
     linkedin: 'https://www.linkedin.com/in/anshumanazad',
   },
+  /**
+   * Hero visual: a fitted line with its residuals, against the dashed
+   * predict-the-mean baseline. Swap for any image in public/, or set to
+   * null to hide it entirely.
+   */
+  heroImage: '/hero-fit.svg' as string | null,
+  heroImageAlt:
+    'A scatter plot with a fitted regression line, its residuals, and a dashed baseline representing predicting the mean',
   /** Set to null to hide the resume link entirely. */
   resume: null as string | null,
 } as const;
