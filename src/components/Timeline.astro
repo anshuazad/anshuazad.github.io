@@ -1,42 +1,61 @@
 ---
-import type { Role } from '../data/experience';
+import type { Company } from '../data/experience';
 interface Props {
-  roles: Role[];
+  companies: Company[];
 }
-const { roles } = Astro.props;
+const { companies } = Astro.props;
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('');
 ---
 
-<ol class="roles">
+<ol class="companies">
   {
-    roles.map((role) => (
-      <li class="role">
-        <div class="role-head">
-          {role.logo ? (
-            <img class="logo" src={role.logo} alt="" width="96" height="96" loading="lazy" />
+    companies.map((c) => (
+      <li class="company">
+        <div class="company-head">
+          {c.logo ? (
+            <img class="logo" src={c.logo} alt="" width="96" height="96" loading="lazy" />
           ) : (
             <span class="logo logo-fallback" aria-hidden="true">
-              {role.company.slice(0, 2)}
+              {initials(c.company)}
             </span>
           )}
-          <h3>{role.title}</h3>
-          <p class="meta">
-            {role.company} <span aria-hidden="true">·</span> {role.period}
-          </p>
+          <div class="company-id">
+            <h3>{c.company}</h3>
+            <p class="company-meta">
+              {c.period}
+              {c.meta && <span> · {c.meta}</span>}
+            </p>
+          </div>
         </div>
 
-        <ol class="engagements">
-          {role.engagements.map((e) => (
-            <li class="engagement">
-              <h4>
-                {e.name}
-                {e.client && <span class="client">{e.client}</span>}
-              </h4>
-              <p class="period">{e.period}</p>
-              <ul class="points">
-                {e.points.map((p) => (
-                  <li>{p}</li>
+        <ol class="roles">
+          {c.roles.map((role) => (
+            <li class="role">
+              <h4>{role.title}</h4>
+              <p class="role-period">{role.period}</p>
+
+              <ol class="engagements">
+                {role.engagements.map((e) => (
+                  <li class="engagement">
+                    <h5>
+                      {e.name}
+                      {e.client && <span class="client">{e.client}</span>}
+                    </h5>
+                    <p class="eng-period">{e.period}</p>
+                    <ul class="points">
+                      {e.points.map((p) => (
+                        <li>{p}</li>
+                      ))}
+                    </ul>
+                  </li>
                 ))}
-              </ul>
+              </ol>
             </li>
           ))}
         </ol>
@@ -46,89 +65,176 @@ const { roles } = Astro.props;
 </ol>
 
 <style>
+  .companies,
   .roles,
-  .engagements {
+  .engagements,
+  .points {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .role + .role {
-    margin-top: var(--space-4);
+
+  .company + .company {
+    margin-top: var(--space-5);
   }
-  .role-head {
-    display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
+
+  /* ── Company: badge and name on one line, once per employer ───────────── */
+  .company-head {
+    display: flex;
     align-items: center;
-    column-gap: var(--space-2);
+    gap: var(--space-2);
   }
+
   .logo {
-    grid-row: span 2;
+    flex: none;
     width: 2.5rem;
     height: 2.5rem;
+    max-width: none;
     border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--bg);
     object-fit: contain;
     padding: 0.3rem;
   }
+
   .logo-fallback {
     display: grid;
     place-items: center;
     font-family: var(--font-display);
     font-size: 0.9rem;
+    font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
   }
-  .role-head h3 {
+
+  .company-id h3 {
     font-family: var(--font-display);
     font-size: var(--step-2);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
-  .meta {
-    margin-top: 0.3rem;
+
+  .company-meta {
+    margin-top: 0.2rem;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--text-faint);
   }
-  .engagements {
+
+  /* ── Roles: dotted timeline nested under the company ──────────────────── */
+  .roles {
+    position: relative;
     margin-top: var(--space-3);
-    padding-left: var(--space-3);
-    border-left: 2px solid var(--border);
+    padding-left: var(--space-4);
   }
-  .engagement + .engagement {
-    margin-top: var(--space-3);
+
+  .roles::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0.45rem;
+    bottom: 0.4rem;
+    width: 2px;
+    background: var(--border);
   }
-  .engagement h4 {
-    margin: 0;
-    font-size: 0.975rem;
+
+  .role {
+    position: relative;
+  }
+
+  .role::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-4) + 1px);
+    top: 0.3rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+
+  .role + .role {
+    margin-top: var(--space-4);
+  }
+
+  .role h4 {
+    font-size: var(--step-1);
     font-weight: 600;
-    line-height: 1.35;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
   }
-  .client {
-    font-weight: 400;
-    color: var(--accent-text);
-  }
-  .client::before {
-    content: '· ';
-    color: var(--text-faint);
-  }
-  .period {
-    margin-top: 0.1rem;
+
+  .role-period {
+    margin-top: 0.2rem;
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.04em;
     color: var(--text-faint);
   }
+
+  /* ── Engagements ──────────────────────────────────────────────────────── */
+  .engagements {
+    margin-top: var(--space-3);
+  }
+
+  .engagement + .engagement {
+    margin-top: var(--space-3);
+  }
+
+  .engagement h5 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .client {
+    font-weight: 400;
+    color: var(--accent-text);
+  }
+
+  .client::before {
+    content: '· ';
+    color: var(--text-faint);
+  }
+
+  .eng-period {
+    margin-top: 0.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: var(--text-faint);
+  }
+
   .points {
-    margin: var(--space-2) 0 0;
+    margin-top: var(--space-2);
     padding-left: 1.1rem;
     color: var(--text-muted);
     font-size: 0.9375rem;
+    max-width: 68ch;
   }
+
+  .points li {
+    list-style: disc;
+  }
+
   .points li + li {
     margin-top: var(--space-1);
+  }
+
+  @media (max-width: 40rem) {
+    .roles {
+      padding-left: var(--space-3);
+    }
+    .role::before {
+      left: calc(-1 * var(--space-3) + 1px);
+    }
+    .roles::before {
+      left: 5px;
+    }
   }
 </style>
