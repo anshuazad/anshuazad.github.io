@@ -60,7 +60,7 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
       </Section>
 
       <Section title="Experience" id="experience">
-        <Timeline companies={experience} />
+        <Timeline roles={experience} />
       </Section>
 
       <Section title="Skills" id="skills">
