@@ -37,8 +37,19 @@ export const profile = {
 
 export const education = {
   institution: 'Indian Institute of Technology, Patna',
+  /** Short form, used if no logo is set. */
+  short: 'IIT',
+  /** Crest path under public/. Set to null to fall back to `short`. */
+  logo: '/logos/iitp.webp' as string | null,
   degree: 'B.Tech, Metallurgical and Materials Engineering',
   extra: 'Economics (optional)',
   period: 'Jul 2019 – May 2023',
   detail: 'CGPA 8.3 / 10.0',
+  /**
+   * Leadership and activities that are not competition results — those live
+   * in achievements.ts. Set to [] to hide.
+   */
+  activities: [
+    'Founded the Trading & Investment Club — workshops, seminars and a mentorship programme.',
+  ],
 };

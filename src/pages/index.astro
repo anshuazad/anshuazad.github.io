@@ -68,25 +68,83 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
       </Section>
 
       <Section title="Education" id="education">
-        <h3 class="inst">{education.institution}</h3>
-        <p class="muted degree">
-          {education.degree} <span aria-hidden="true">·</span>{' '}
-          {education.extra}
-        </p>
-        <p class="edu-meta">
-          {education.period} <span aria-hidden="true">·</span>{' '}
-          {education.detail}
-        </p>
+        <div class="edu panel">
+          <div class="edu-head">
+            {
+              education.logo ? (
+                <img
+                  class="edu-badge"
+                  src={education.logo}
+                  alt=""
+                  width="96"
+                  height="96"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="edu-badge is-initials" aria-hidden="true">
+                  {education.short}
+                </span>
+              )
+            }
+            <div>
+              <h3 class="inst">{education.institution}</h3>
+              <p class="meta-line">{education.period}</p>
+            </div>
+          </div>
+
+          <p class="muted degree">
+            {education.degree} <span aria-hidden="true">·</span>{' '}
+            {education.extra}
+          </p>
+
+          <p class="badge cgpa">{education.detail}</p>
+
+          {
+            education.activities.length > 0 && (
+              <ul class="activities">
+                {education.activities.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
       </Section>
 
       <Section title="Achievements" id="achievements">
         <ul class="awards">
           {
             achievements.map((a) => (
-              <li>
-                <span class="award-title">{a.title}</span>
-                <span class="award-result">{a.result}</span>
-                {a.note && <span class="award-note">{a.note}</span>}
+              <li class="award panel">
+                <div class="award-head">
+                  <div class="award-id">
+                    {a.icon ? (
+                      <svg
+                        class="award-mark"
+                        viewBox={a.viewBox ?? '0 0 24 24'}
+                        style={`--scale: ${a.scale ?? 1};`}
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path d={a.icon} />
+                      </svg>
+                    ) : a.mask ? (
+                      <span
+                        class="award-mark is-mask"
+                        aria-hidden="true"
+                        style={`--mark: url('${a.mask}'); --scale: ${a.scale ?? 1};`}
+                      />
+                    ) : a.short ? (
+                      <span class="award-mark is-initials" aria-hidden="true">
+                        {a.short}
+                      </span>
+                    ) : null}
+                    <h3 class="award-title">{a.title}</h3>
+                  </div>
+                  <p class="meta-line">{a.year}</p>
+                </div>
+                <p class="badge award-result">{a.result}</p>
+                {a.note && <p class="award-note muted">{a.note}</p>}
               </li>
             ))
           }
@@ -150,54 +208,134 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
     border-radius: var(--radius);
     color: var(--text-muted);
   }
+  /* ── Education ─────────────────────────────────────────────────────── */
+  .edu-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  /* Institution crests are circular, unlike the rectangular company
+     lockups, so this badge is round rather than a rounded square. The crest
+     is dark blue ink on transparent, so it needs a light plate to stay
+     legible on the dark theme. */
+  .edu-badge {
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    max-width: none;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: #fff;
+    object-fit: contain;
+    padding: 0.15rem;
+  }
+  .edu-badge.is-initials {
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+  }
   .inst {
     font-family: var(--font-display);
     font-size: var(--step-2);
     font-weight: 600;
     letter-spacing: -0.015em;
+    line-height: 1.2;
   }
-  .degree {
+  .edu-head .meta-line {
     margin-top: 0.2rem;
   }
-  .edu-meta {
-    margin-top: 0.3rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--text-faint);
+  .degree {
+    margin-top: var(--space-2);
+    font-size: 0.9375rem;
   }
+  .cgpa {
+    margin-top: var(--space-2);
+  }
+  .activities {
+    margin: var(--space-3) 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+  }
+  .activities li {
+    list-style: disc;
+  }
+  .activities li + li {
+    margin-top: var(--space-1);
+  }
+
+  /* ── Achievements ──────────────────────────────────────────────────── */
   .awards {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    gap: var(--space-2);
   }
-  .awards li {
+  @media (min-width: 48rem) {
+    .awards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .award-head {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0 var(--space-2);
-    padding: var(--space-2) 0;
-    border-bottom: 1px solid var(--border);
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-2);
   }
-  .awards li:first-child {
-    padding-top: 0;
+  .award-id {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
   }
-  .awards li:last-child {
-    border-bottom: 0;
+  /* Marks render in currentColor, so all four read as one set. */
+  /* Every mark gets the same slot and is scaled to fit inside it, so the
+     logos occupy a uniform footprint despite aspect ratios from 0.52
+     (Inter IIT, tall) to 3.64 (FedEx, wide). SVGs fit via the default
+     preserveAspectRatio; the masked bitmap via mask-size: contain. */
+  .award-mark {
+    flex: none;
+    /* Slot is wider than tall so a wordmark has room; per-mark --scale
+       balances height. Measured ink coverage across these four varies ~10x,
+       so a single height cannot make them read as one size. */
+    width: 2.8rem;
+    height: calc(1.5rem * var(--scale, 1));
+    color: var(--text-muted);
+    fill: currentColor;
+  }
+  .award-mark.is-mask {
+    background: currentColor;
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    mask: var(--mark) center / contain no-repeat;
+  }
+  .award-mark.is-initials {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--border);
+    border-radius: 6px;
   }
   .award-title {
-    font-weight: 550;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.35;
   }
   .award-result {
-    color: var(--accent-text);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    font-weight: 500;
+    margin-top: var(--space-2);
   }
   .award-note {
-    flex-basis: 100%;
-    font-size: 0.8125rem;
-    color: var(--text-faint);
+    margin-top: var(--space-2);
+    font-size: 0.875rem;
   }
   .contact-links {
     margin-top: var(--space-2);
