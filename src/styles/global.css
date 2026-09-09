@@ -220,6 +220,41 @@ pre code {
   color: var(--text-muted);
 }
 
+/* ── Card + badge primitives ────────────────────────────────────────────── */
+/* Shared so Experience, Education and Achievements read as one system
+   instead of each re-declaring the same surface. */
+.panel {
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s var(--ease);
+}
+
+.panel:hover {
+  border-color: var(--border-strong);
+}
+
+/* The one result worth reading if you read nothing else. */
+.badge {
+  display: inline-block;
+  padding: 0.28em 0.65em;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Small mono meta line: periods, years, locations. */
+.meta-line {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
 .prose {
   max-width: var(--measure);
 }

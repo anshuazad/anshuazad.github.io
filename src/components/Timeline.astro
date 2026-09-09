@@ -42,7 +42,7 @@ const initials = (name: string) =>
 
               <ol class="engagements">
                 {role.engagements.map((e) => (
-                  <li class="engagement">
+                  <li class="engagement panel">
                     <div class="eng-head">
                       <h5>
                         {e.name}
@@ -53,7 +53,7 @@ const initials = (name: string) =>
 
                     {e.summary && <p class="summary">{e.summary}</p>}
 
-                    {e.outcome && <p class="outcome">{e.outcome}</p>}
+                    {e.outcome && <p class="outcome badge">{e.outcome}</p>}
 
                     {e.tags && e.tags.length > 0 && (
                       <ul class="chip-row tags">
@@ -200,20 +200,7 @@ const initials = (name: string) =>
     margin-top: var(--space-3);
   }
 
-  /* Each engagement is a card, so the section scans as a set of outcomes
-     rather than one long run of bullets. */
-  .engagement {
-    padding: var(--space-3);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    transition: border-color 0.2s var(--ease);
-  }
-
-  .engagement:hover {
-    border-color: var(--border-strong);
-  }
-
+  /* Surface and hover come from .panel in global.css. */
   .engagement + .engagement {
     margin-top: var(--space-2);
   }
@@ -241,17 +228,9 @@ const initials = (name: string) =>
     max-width: 62ch;
   }
 
-  /* The one number or result worth reading if you read nothing else. */
+  /* Colour and shape come from .badge in global.css. */
   .outcome {
-    display: inline-block;
     margin-top: var(--space-2);
-    padding: 0.28em 0.65em;
-    background: var(--accent-soft);
-    color: var(--accent-text);
-    border-radius: 7px;
-    font-size: 0.8rem;
-    font-weight: 550;
-    font-variant-numeric: tabular-nums;
   }
 
   .tags {
