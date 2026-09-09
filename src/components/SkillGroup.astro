@@ -4,23 +4,48 @@ interface Props {
   group: SkillGroup;
 }
 const { group } = Astro.props;
+
+const cls = (s: SkillGroup['items'][number]) =>
+  ['chip', s.primary && 'is-primary', s.kind === 'tool' && 'is-tool']
+    .filter(Boolean)
+    .join(' ');
 ---
 
 <div class="group">
   <h3>{group.title}</h3>
   <ul class="chip-row">
-    {group.items.map((item) => <li class="chip">{item}</li>)}
+    {group.items.map((s) => <li class={cls(s)}>{s.name}</li>)}
   </ul>
 </div>
 
 <style>
   .group + :global(.group) {
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
   }
+
+  /* Was smaller and dimmer than the chips it labelled; brought up to the
+     type scale the rest of the page uses. */
   h3 {
-    font-size: 0.9rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
     font-weight: 600;
+    letter-spacing: -0.005em;
     margin-bottom: var(--space-2);
-    color: var(--text-muted);
+    color: var(--text);
+  }
+
+  /* Tools are proper nouns, so they read as code rather than prose. */
+  .chip.is-tool {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* Emphasis instead of invented percentages. */
+  .chip.is-primary {
+    background: var(--accent-soft);
+    border-color: transparent;
+    color: var(--accent-text);
+    font-weight: 550;
   }
 </style>
