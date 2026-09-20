@@ -61,7 +61,7 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
             {
               education.logo ? (
                 <img
-                  class="edu-badge"
+                  class="edu-badge logo-plate"
                   src={education.logo}
                   alt=""
                   width="96"
@@ -69,7 +69,7 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
                   loading="lazy"
                 />
               ) : (
-                <span class="edu-badge is-initials" aria-hidden="true">
+                <span class="edu-badge logo-plate is-initials" aria-hidden="true">
                   {education.short}
                 </span>
               )
@@ -106,24 +106,17 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
               <li class="award panel">
                 <div class="award-head">
                   <div class="award-id">
-                    {a.icon ? (
-                      <svg
-                        class="award-mark"
-                        viewBox={a.viewBox ?? '0 0 24 24'}
-                        style={`--scale: ${a.scale ?? 1};`}
-                        aria-hidden="true"
-                        focusable="false"
-                      >
-                        <path d={a.icon} />
-                      </svg>
-                    ) : a.mask ? (
-                      <span
-                        class="award-mark is-mask"
-                        aria-hidden="true"
-                        style={`--mark: url('${a.mask}'); --scale: ${a.scale ?? 1};`}
+                    {a.logo ? (
+                      <img
+                        class="award-mark logo-plate"
+                        src={a.logo}
+                        alt=""
+                        width="96"
+                        height="96"
+                        loading="lazy"
                       />
                     ) : a.short ? (
-                      <span class="award-mark is-initials" aria-hidden="true">
+                      <span class="award-mark logo-plate is-initials" aria-hidden="true">
                         {a.short}
                       </span>
                     ) : null}
@@ -179,31 +172,6 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
     align-items: center;
     gap: var(--space-2);
   }
-  /* Institution crests are circular, unlike the rectangular company
-     lockups, so this badge is round rather than a rounded square. The crest
-     is dark blue ink on transparent, so it needs a light plate to stay
-     legible on the dark theme. */
-  .edu-badge {
-    flex: none;
-    width: 2.75rem;
-    height: 2.75rem;
-    max-width: none;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: #fff;
-    object-fit: contain;
-    padding: 0.15rem;
-  }
-  .edu-badge.is-initials {
-    display: grid;
-    place-items: center;
-    background: var(--bg);
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--text-muted);
-  }
   .inst {
     font-family: var(--font-display);
     font-size: var(--step-2);
@@ -247,10 +215,12 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
       grid-template-columns: 1fr 1fr;
     }
   }
+  /* Centred, not baseline-aligned: the logo plate is twice the title's
+     height, so a shared baseline drags the year well below the title. */
   .award-head {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-1) var(--space-2);
   }
@@ -259,36 +229,6 @@ const projects = (await getCollection('projects', (p) => !p.data.draft)).sort(
     align-items: center;
     gap: var(--space-2);
     min-width: 0;
-  }
-  /* Marks render in currentColor, so all four read as one set. */
-  /* Every mark gets the same slot and is scaled to fit inside it, so the
-     logos occupy a uniform footprint despite aspect ratios from 0.52
-     (Inter IIT, tall) to 3.64 (FedEx, wide). SVGs fit via the default
-     preserveAspectRatio; the masked bitmap via mask-size: contain. */
-  .award-mark {
-    flex: none;
-    /* Slot is wider than tall so a wordmark has room; per-mark --scale
-       balances height. Measured ink coverage across these four varies ~10x,
-       so a single height cannot make them read as one size. */
-    width: 2.8rem;
-    height: calc(1.5rem * var(--scale, 1));
-    color: var(--text-muted);
-    fill: currentColor;
-  }
-  .award-mark.is-mask {
-    background: currentColor;
-    -webkit-mask: var(--mark) center / contain no-repeat;
-    mask: var(--mark) center / contain no-repeat;
-  }
-  .award-mark.is-initials {
-    display: grid;
-    place-items: center;
-    font-family: var(--font-display);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    border: 1px solid var(--border);
-    border-radius: 6px;
   }
   .award-title {
     font-size: 0.9375rem;
