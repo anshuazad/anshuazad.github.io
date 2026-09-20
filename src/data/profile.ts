@@ -17,7 +17,7 @@ export const profile = {
     name: 'ZS Associates',
     logo: '/logos/zs.svg',
   } as { label: string; name: string; logo: string } | null,
-  location: 'India',
+  location: 'Gurugram, HR, India',
   email: 'anshuazad7@gmail.com',
   links: {
     github: 'https://github.com/anshuazad',
