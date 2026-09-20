@@ -255,6 +255,38 @@ pre code {
   color: var(--text-faint);
 }
 
+/* Every brand logo on the site sits on one of these. The plate is what
+   stays uniform, not the logo: aspect ratios run from 0.51 (Inter IIT) to
+   3.64 (FedEx), which no shared width or height can reconcile.
+
+   The plate is always light, in both themes. These are other people's marks,
+   drawn for paper — FedEx's deep purple in particular vanishes against the
+   dark background, so a theme-following plate cannot carry all of them. */
+.logo-plate {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  max-width: none;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+  object-fit: contain;
+  padding: 0.3rem;
+}
+
+/* Initials shown when there is no logo. Not a real mark, so it drops the
+   white plate and sits on the page background instead. */
+.logo-plate.is-initials {
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
 .prose {
   max-width: var(--measure);
 }

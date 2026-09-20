@@ -22,7 +22,7 @@ const firstName = profile.name.split(' ')[0];
         <div class="employer">
           <span class="employer-label">{profile.employer.label}</span>
           <img
-            class="employer-logo"
+            class="employer-logo logo-plate"
             src={profile.employer.logo}
             alt={profile.employer.name}
             width="96"
@@ -112,15 +112,7 @@ const firstName = profile.name.split(' ')[0];
     color: var(--text-faint);
   }
 
-  .employer-logo {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    object-fit: contain;
-    padding: 0.3rem;
-  }
+  /* Shape, size and plate come from .logo-plate in global.css. */
 
   /* Sized against viewport height so the whole hero always fits one screen,
      including on short laptop viewports. */

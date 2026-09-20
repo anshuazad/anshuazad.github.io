@@ -19,9 +19,9 @@ const initials = (name: string) =>
       <li class="company">
         <div class="company-head">
           {c.logo ? (
-            <img class="logo" src={c.logo} alt="" width="96" height="96" loading="lazy" />
+            <img class="logo logo-plate" src={c.logo} alt="" width="96" height="96" loading="lazy" />
           ) : (
-            <span class="logo logo-fallback" aria-hidden="true">
+            <span class="logo logo-plate is-initials" aria-hidden="true">
               {initials(c.company)}
             </span>
           )}
@@ -105,27 +105,7 @@ const initials = (name: string) =>
     gap: var(--space-2);
   }
 
-  .logo {
-    flex: none;
-    width: 2.5rem;
-    height: 2.5rem;
-    max-width: none;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    object-fit: contain;
-    padding: 0.3rem;
-  }
-
-  .logo-fallback {
-    display: grid;
-    place-items: center;
-    font-family: var(--font-display);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-  }
+  /* Shape, size and plate come from .logo-plate in global.css. */
 
   .company-id h3 {
     font-family: var(--font-display);
