@@ -9,8 +9,8 @@ export const profile = {
     'moved a biomarker signal from labeled clinical records into claims data where the test ' +
     'itself was never run. I care most about the unglamorous half of this work: baselines, ' +
     'validation harnesses, and knowing when a result is real.',
-  /** Short line under the greeting. Replace with your own. */
-  tagline: 'I make models prove themselves.',
+  /** Short line under the greeting. Set to null to hide it. */
+  tagline: null as string | null,
   /** Shown under the tagline in the hero. Set to null to hide. */
   employer: {
     label: 'Currently at',
